@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dự đoán khả năng rời đi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        h3, p {
+            text-align: center;
+        }
+
+        strong {
+            color: #d9534f;
+        }
+
+        .back-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <h2>🔮 Dự đoán khả năng khách rời đi</h2>
+    <form method="POST">
+        <label for="CustomerID">Mã khách hàng:</label>
+        <input type="text" id="CustomerID" name="CustomerID" placeholder="Nhập mã khách hàng..." required>
+        <button type="submit">Dự đoán</button>
+    </form>
+
+    {% if prediction is not none %}
+        <hr>
+        <h3>📌 Kết quả cho mã: <span style="color: #007bff;">{{ customer_id }}</span></h3>
+        <p>🔢 Xác suất rời đi: <strong>{{ probability }}</strong></p>
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    <a href="/" class="back-button">⬅️ Quay lại trang chủ</a>
+</body>
+</html>

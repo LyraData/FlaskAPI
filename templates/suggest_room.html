@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gợi ý phòng trọ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 30px;
+            background-color: #f2f2f2;
+        }
+        .room-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .form-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">🔎 Tìm kiếm & Gợi ý phòng trọ</h2>
+
+    <form method="POST" class="form-section">
+        <div class="form-group">
+            <label for="Gender">Giới tính:</label>
+            <select class="form-control" id="Gender" name="Gender">
+                <option value="Nam" {% if gender == 'Nam' %}selected{% endif %}>Nam</option>
+                <option value="Nữ" {% if gender == 'Nữ' %}selected{% endif %}>Nữ</option>
+                <option value="Nam/Nữ" {% if gender == 'Nam/Nữ' %}selected{% endif %}>Nam/Nữ</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="MaxPrice">Giá thuê tối đa (VNĐ):</label>
+            <input type="number" class="form-control" id="MaxPrice" name="MaxPrice"
+                   placeholder="VD: 2500000" value="{{ max_price or '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Quận ưu tiên (chọn nhiều):</label><br>
+            {% for district in districts %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="PreferredDistricts"
+                           value="{{ district }}" id="district_{{ district }}"
+                           {% if preferred_districts and district in preferred_districts %}checked{% endif %}>
+                    <label class="form-check-label" for="district_{{ district }}">{{ district }}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">🔍 Gợi ý phòng</button>
+    </form>
+
+    {% if reason_room %}
+        <div class="alert alert-info">
+            <strong>Lý do gợi ý:</strong> {{ reason_room }}<br>
+            <strong>Quận ưu tiên:</strong> {{ reason_district }}
+        </div>
+    {% endif %}
+
+    {% if rooms %}
+        <h4>Kết quả gợi ý:</h4>
+        {% for room in rooms %}
+            <div class="room-card">
+                <p><strong>Mã phòng:</strong> {{ room.RoomID }}</p>
+                <p><strong>Loại phòng:</strong> {{ room.RoomType }}</p>
+                <p><strong>Giới tính:</strong> {{ room.RoomGender }}</p>
+                <p><strong>Giá:</strong> {{ "{:,.0f}".format(room.Price) }} VNĐ</p>
+                <p><strong>Địa chỉ:</strong> {{ room.Adress }}</p>
+            </div>
+        {% endfor %}
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-secondary">🔙 Quay lại</a>
+        </div>
+    {% elif rooms is not none %}
+        <div class="alert alert-warning">
+            Không có phòng nào phù hợp với tiêu chí của bạn.
+        </div>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-secondary">🔙 Quay lại</a>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
